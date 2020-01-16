@@ -8,19 +8,53 @@ import {
 import HomePage from './Components/HomePage/HomePage';
 import Setting from './Components/Setting/Setting';
 import 'bootstrap/dist/css/bootstrap.css';
+import { connect } from 'react-redux';
+import axios from 'axios';
+
+class App extends React.Component {
+
+  getArtisans = async () => {
+    let data;
+    await axios.get('http://localhost:8000/artisans')
+      .then(response => { data = response.data })
+    return data
+  }
+
+  componentDidMount() {
 
 
+    axios.get('http://localhost:8000/artisans')
+      .then(response => { this.props.initialyse(response.data) })
 
-function App() {
-  return (
-    <div className="App">
+
+  }
+
+  render() {
+    return (
+      <div className={this.props.theme ? "App" : "AppDark"}>
         <Switch>
           <Route exact path='/' component={HomePage}></Route>
           <Route path='/formartisan' component={FormArtisan}></Route>
           <Route path='/setting' component={Setting}></Route>
         </Switch>
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    theme: state.theme,
+    data: state.data
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    initialyse: (data) => {
+      dispatch({ type: 'INITIALYSE', payload: data })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+

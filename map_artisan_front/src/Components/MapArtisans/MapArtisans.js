@@ -1,5 +1,5 @@
 import React from 'react';
-import L, { Icon } from 'leaflet';
+import L, { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css'
 import './MapArtisans.css';
 
@@ -38,7 +38,7 @@ class MapArtisans extends React.Component {
       ]
     });
 
-    //definition des caractéristique de l'icone
+    //definition des caractéristiques de l'icone
     const myIcon = L.icon({
       iconUrl: 'logo192.png',
       iconSize: [38, 95],
@@ -47,10 +47,10 @@ class MapArtisans extends React.Component {
       // shadowUrl: 'logo192.png',
       shadowSize: [68, 95],
       shadowAnchor: [22, 94],
-      imagePath: Icon.Default
+      // imagePath: Icon.Default
     });
 
-    const marker = L.marker([51.5, -0.09]).addTo(this.map);
+    // const marker = L.marker([51.5, -0.09]).addTo(this.map);
 
 
 
@@ -60,14 +60,12 @@ class MapArtisans extends React.Component {
 
     //description du popup
     const popup = L.popup({
-      // autoClose:true
-      // autoPan: false
-      minWidth:30,
-      autoClose : true
+      minWidth: 30,
+      autoClose: true
     })
-                  .setLatLng(this.state.center)
-                  .setContent('<p>Hello world!<br />This is Michel.</p>');
-// creation d'un popup sur le marker
+      .setLatLng(this.state.center)
+      .setContent('<p>Hello world!<br />This is Michel.</p>');
+    // creation d'un popup sur le marker
     layer.bindPopup(popup);
 
   }

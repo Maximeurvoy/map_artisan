@@ -1,30 +1,32 @@
 import React from 'react';
 import Button from '../Button/Button';
-
-
-
-
-
+import { connect } from 'react-redux';
 
 
 class ButtonsList extends React.Component {
-  constructor(){
-  super()
-  this.state = {
-  specialtys: ['Bottier', 'Modiste', 'Bijoutier']
-}}
+  constructor() {
+    super()
 
-render(){
-  return(
-  <>
-    {this.state.specialtys.map(specialty => {
-      return (
-        <Button specialty={specialty} />)
-    })}
-  </>
-)
+  }
 
-}
+  render() {
+    return (
+      <>
+        {this.props.data.map((specialty, index) => {
+          return (
+            <Button specialty={specialty.metier_id} key={index} />)
+        })}
+      </>
+    )
+  }
 }
 
-export default ButtonsList;
+const mapStateToProps = state => {
+  return {
+    specialtys: state.specialtys,
+    truc: state.name,
+    data: state.data
+  }
+}
+
+export default connect (mapStateToProps) (ButtonsList);

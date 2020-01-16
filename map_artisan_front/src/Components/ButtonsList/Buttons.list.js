@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 class ButtonsList extends React.Component {
   constructor() {
     super()
-
   }
 
   render() {
@@ -29,4 +28,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect (mapStateToProps) (ButtonsList);
+export default connect(mapStateToProps)(ButtonsList);

@@ -29,30 +29,29 @@ CREATE TABLE  artisan (
   photo_url2 VARCHAR (128),
   photo_url3 VARCHAR (128),
   ville VARCHAR (128),
+  code_postal VARCHAR (5),
   metier_id INT NOT NULL, 
-  prestation_id INT NOT NULL,
-  FOREIGN KEY (metier_id) REFERENCES metier(id),
-  FOREIGN KEY (prestation_id) REFERENCES prestation(id)
+  FOREIGN KEY (metier_id) REFERENCES metier(id)
 );
 
 -- creation de la table de jointure d'offre de prestations des artisans
 CREATE TABLE offre (
-  id_prestation INT NOT NULL,
-  id_artisan INT NOT NULL
+  prestation_id INT NOT NULL,
+  artisan_id INT NOT NULL,
+  FOREIGN KEY (prestation_id) REFERENCES prestation(id),
+  FOREIGN KEY (artisan_id) REFERENCES artisan(id)
 );
 
---creation de la table sur les avis laissé sur les artisans possibilité de plusieur avis pour un même artisan
+-- creation de la table sur les avis laissé sur les artisans possibilité de plusieur avis pour un même artisan
 CREATE TABLE avis (
   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   commentaire VARCHAR (400),
-  id_artisan INT NOT NULL
-)
-
---créetion de la table de jointure créer la réputation d'un artisan
-CREATE TABLE reputation (
-  id_artisan INT NOT NULL,
-  id_avis INT NOT NULL
+  note INT(2),
+  artisan_id INT NOT NULL,
+  FOREIGN KEY (artisan_id) REFERENCES artisan(id)
 );
+
+
 
 
 

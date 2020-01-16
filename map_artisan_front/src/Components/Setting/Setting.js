@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../Navbar/Navbar';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import Button from '../Button/Button';
+// import Button from '../Button/Button';
 
 class Setting extends React.Component {
   constructor() {

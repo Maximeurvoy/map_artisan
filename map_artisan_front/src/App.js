@@ -10,23 +10,20 @@ import Setting from './Components/Setting/Setting';
 import 'bootstrap/dist/css/bootstrap.css';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import ListeArtisans from './Components/ListeArtisans/ListeArtisans';
 
 class App extends React.Component {
 
-  getArtisans = async () => {
-    let data;
-    await axios.get('http://localhost:8000/artisans')
-      .then(response => { data = response.data })
-    return data
-  }
+  // getArtisans = async () => {
+  //   let data;
+  //   await axios.get('http://localhost:8000/artisans')
+  //     .then(response => { data = response.data })
+  //   return data
+  // }
 
   componentDidMount() {
-
-
     axios.get('http://localhost:8000/artisans')
       .then(response => { this.props.initialyse(response.data) })
-
-
   }
 
   render() {
@@ -36,6 +33,7 @@ class App extends React.Component {
           <Route exact path='/' component={HomePage}></Route>
           <Route path='/formartisan' component={FormArtisan}></Route>
           <Route path='/setting' component={Setting}></Route>
+          <Route path='/listeartisan' component={ListeArtisans}></Route>
         </Switch>
       </div>
     );

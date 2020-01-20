@@ -3,7 +3,7 @@ const app = express()
 const artisans = require('./Routes/Artisans.js')
 const avis = require('./Routes/Avis.js')
 const prestations = require('./Routes/Prestations.js')
-
+const metiers = require('./Routes/Metiers.js')
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 app.use('/avis', avis);
 app.use('/artisans', artisans);
 app.use('/prestations',prestations)
+app.use('/metiers',metiers)
 
 
 app.listen(8000, function () {

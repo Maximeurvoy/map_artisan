@@ -30,6 +30,8 @@ CREATE TABLE  artisan (
   photo_url3 VARCHAR (128),
   ville VARCHAR (128),
   code_postal VARCHAR (5),
+  lat INT,
+  lon INT,
   metier_id INT NOT NULL, 
   FOREIGN KEY (metier_id) REFERENCES metier(id)
 );

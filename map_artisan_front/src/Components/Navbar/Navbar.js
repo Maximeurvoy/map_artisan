@@ -14,15 +14,18 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <Link className="navbar-brand" to='/'>home page</Link>
+          <Link className="navbar-brand" to='/'>home page</Link>
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <li className="nav-item active">
               <Link className="navbar-brand" to='/formartisan'>form artisan</Link>
             </li>
             <li className="nav-item">
-            <Link className="navbar-brand" to='/setting'>setting</Link>
+              <Link className="navbar-brand" to='/setting'>setting</Link>
             </li>
-           
+            <li className="nav-item active">
+              <Link className="navbar-brand" to='/listeartisan'>liste artisans</Link>
+            </li>
+
           </ul>
         </div>
       </nav>

@@ -10,12 +10,12 @@ class MapArtisans extends React.Component {
   constructor() {
     super()
     this.state = {
-      center: [47.2173, -1.5534],
-      zoom: 15,
+      center: [55.2173, -1.5534],
+      zoom: 13,
       artisansNantais: ['rien'],
-      iconUrl: 'logo192.png',
-      iconSize: [38, 95],
-      iconAnchor: [22, 94],
+      iconUrl: 'redIcon.png',
+      iconSize: [38, 50],
+      iconAnchor: [22, 49],
       popupAnchor: [-3, -76],
       shadowSize: [68, 95],
       shadowAnchor: [22, 94]
@@ -23,29 +23,36 @@ class MapArtisans extends React.Component {
     }
   }
 
-
-
-  createMarker = async (arrayLatLon) => {
+  createMarker = async (arrayLatLon,name) => {
     for (let i = 0; i < arrayLatLon.length; i++) {
       const theIcon = L.icon({
-        iconUrl: 'logo192.png',
-        iconSize: [38, 95],
-        iconAnchor: [22, 94],
-        popupAnchor: [-3, -76],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94],
+        iconUrl: this.state.iconUrl,
+        iconSize: this.state.iconSize,
+        iconAnchor: this.state.iconAnchor,
+        popupAnchor: this.state.popupAnchor,
+        shadowSize: this.state.shadowSize,
+        shadowAnchor: this.state.shadowAnchor,
       });
       const layertwo = L.marker(arrayLatLon[i], { icon: theIcon }).addTo(this.map);
       layertwo.addTo(this.map)
+    
+
+      const popuptwo = L.popup({
+        minWidth: 30,
+        autoClose: true
+      })
+        .setLatLng(this.state.center)
+        .setContent(`<p>${name[i]}</p>`);
+        layertwo.bindPopup(popuptwo);
+
     }
   }
 
     componentDidMount() {
       navigator.geolocation.getCurrentPosition((pos) => {
         let crd = pos.coords;
-        // console.log(`La précision est de ${crd.accuracy} mètres.`);
         let array = [crd.latitude, crd.longitude]
-        this.setState({ center: this.array })
+        this.setState({ center: array })
       })
 
       console.log(this.state.center)
@@ -53,14 +60,14 @@ class MapArtisans extends React.Component {
       axios.get('http://localhost:8000/artisans')
         .then(response => { this.props.initialyse(response.data) })
         .then(() => {
-          this.setState({ listicon: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.lat, pos.lon] }) })
+          this.setState({ listicon: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.lat, pos.lon]}) })
+          this.setState({ listname: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.entreprise_nom]}) })
+
         })
         .then(() => {
-          // console.log(this.state.listicon)
-          // create map
           this.map = L.map('map', {
             center: this.state.center,
-            zoom: this.state.zoom,
+            zoom: 13,
             layers: [
               L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'),
             ]
@@ -89,13 +96,12 @@ class MapArtisans extends React.Component {
           // creation d'un popup sur le marker
           layer.bindPopup(popup);
 
-          this.createMarker(this.state.listicon)
+          this.createMarker(this.state.listicon,this.state.listname)
         })
-
-    
     // this.setState({ listicon: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.lat, pos.lon] }) })
     // let test2 = [[47.2273, -1.5634], [47.23, -1.582]]
     // createMarker(test2)
+    console.log(this.state.center)
   }
 
   render() {
@@ -104,6 +110,8 @@ class MapArtisans extends React.Component {
       <>
         <div id="map" className='testMap'></div>
         <button onClick={() => console.log(this.state.listicon)}>testlist</button>
+        <button onClick={() => console.log(this.state.center)}>testlist</button>
+
       </>
     )
   }

@@ -14,7 +14,7 @@ class ButtonsList extends React.Component {
     let newTab = [...new Set(this.props.data.map((specialty, index) => { return (specialty.metier_id) }))]
     return (
       <>
-        {newTab.map(metier => <Button metier={metier} />)}
+        {newTab.map((metier,index) => <Button metier={metier} key={index} />)}
       </>
     )
   }

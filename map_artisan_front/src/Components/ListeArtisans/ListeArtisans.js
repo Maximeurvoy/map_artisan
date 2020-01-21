@@ -7,7 +7,7 @@ class ListeArtisans extends React.Component {
 
   addListSpecialty = (datalist) => {
     return datalist.map((artisan,index) => {
-      console.log(artisan)
+      // console.log(artisan)
       return (
         <li key ={index}>{artisan.entreprise_nom}  {artisan.site_internet} {artisan.metier_id}</li>
       )

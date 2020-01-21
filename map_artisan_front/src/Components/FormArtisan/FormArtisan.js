@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../Navbar/Navbar';
 import { render } from 'react-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
 class FormArtisan extends React.Component {
   constructor() {
@@ -18,7 +19,9 @@ class FormArtisan extends React.Component {
       photo_url3: "",
       ville: "",
       code_postal: "",
-      metier_id: "1"
+      metier_id: "1",
+      metierType:['trdk'],
+      listMetier: []
     }
   }
 
@@ -40,12 +43,26 @@ class FormArtisan extends React.Component {
     });
   };
 
+  // metierType = async () => {
+  componentDidMount() {
+    axios.get('http://localhost:8000/metiers')
+      .then(result => this.setState({ listMetier: (result.data) }))
+      // .then(() => {
+      //   this.state.listMetier.map(metier =>      
+      // <option>{metier.metier_type}</option>
+          
+      //   )
+      // })
+  }
+
+
+  // }
+
   render() {
     return (
       <>
         <Navbar />
         <h1>Form Artisan</h1>
-
         <form className="needs-validation" noValidate>
           <div className="form-row">
             <div className="col-md-4 mb-3">
@@ -105,35 +122,32 @@ class FormArtisan extends React.Component {
             <div className="form-group col-md-4">
               <label htmlFor="inputState">Type d'artisanat</label>
               <select id="inputState" name="metier_id" onChange={this.handleInputChange} className="form-control">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>Bijoutier</option>
-                <option>Maroquinnier</option>
-                <option>Tailleur</option>
-                <option>Boutique</option>
+                {
+                  this.state.listMetier.length > 0 &&
+                  this.state.listMetier.map(metier => <option>{metier.metier_type}</option>)
+                }
               </select>
             </div>
-            </div>
+          </div>
 
 
-            <div className="form-check form-check-inline">
-              <input name="" className="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" />
-              <label className="form-check-label" htmlFor="inlineCheckbox1">Vente sur place</label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input className="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" />
-              <label className="form-check-label" htmlFor="inlineCheckbox2">Fabrication in situ</label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input className="form-check-input" type="checkbox" id="inlineCheckbox3" value="option1" />
-              <label className="form-check-label" htmlFor="inlineCheckbox3">Réparation</label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input className="form-check-input" type="checkbox" id="inlineCheckbox4" value="option2" />
-              <label className="form-check-label" htmlFor="inlineCheckbox4">initiation / stage / formation</label>
-            </div>
-          
+          <div className="form-check form-check-inline">
+            <input name="" className="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" />
+            <label className="form-check-label" htmlFor="inlineCheckbox1">Vente sur place</label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" />
+            <label className="form-check-label" htmlFor="inlineCheckbox2">Fabrication in situ</label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="checkbox" id="inlineCheckbox3" value="option1" />
+            <label className="form-check-label" htmlFor="inlineCheckbox3">Réparation</label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="checkbox" id="inlineCheckbox4" value="option2" />
+            <label className="form-check-label" htmlFor="inlineCheckbox4">initiation / stage / formation</label>
+          </div>
+
           <div className="form-group">
             <label htmlFor="exampleFormControlTextarea1">laisser un avis</label>
             <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -158,11 +172,17 @@ class FormArtisan extends React.Component {
           </div>
           <button id='submitButton' onClick={this.submitForm} className="btn btn-primary" type="submit">Enregistrement d'un nouvel artisan</button>
         </form>
+        <button onClick={this.metierType}>testmetier</button>
       </>
     )
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    data: state.data,
 
+  }
+}
 
-export default FormArtisan;
+export default connect(mapStateToProps)(FormArtisan);

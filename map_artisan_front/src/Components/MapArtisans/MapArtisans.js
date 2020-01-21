@@ -36,7 +36,6 @@ class MapArtisans extends React.Component {
       const layertwo = L.marker(arrayLatLon[i], { icon: theIcon }).addTo(this.map);
       layertwo.addTo(this.map)
     
-
       const popuptwo = L.popup({
         minWidth: 30,
         autoClose: true

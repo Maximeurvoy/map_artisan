@@ -34,8 +34,10 @@ class MapArtisan2 extends React.Component {
       listname: [['robert'], ['simon']],
       artisan: [[{
         position: [47,-1.55],
-        nom: ''
-      }]]
+        nom: '',
+        id_metier:0
+      }]],
+      metier_idChoose:1
 
     }
   }
@@ -80,7 +82,7 @@ class MapArtisan2 extends React.Component {
         this.setState({ listicon: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.lat, pos.lon] }) })
         this.setState({ listname: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.entreprise_nom] }) })
         this.setState({
-          artisan:[this.props.data.filter(pos => pos.lat).map(pos =>{return {position :[pos.lat, pos.lon], nom :pos.entreprise_nom}} )]})
+          artisan:[this.props.data.filter(pos => pos.lat).map(pos =>{return {position :[pos.lat, pos.lon], nom :pos.entreprise_nom, id_metier:pos.metier_id}} )]})
           // this.setState({this.props.data.filter(pos => pos.lat).map(pos => { return {nom: pos.entreprise_nom }})      
            })
         
@@ -102,7 +104,7 @@ render() {
     // className: 'leaflet-div-icon'
   });
 
-  console.log(this.state.listicon)
+  // console.log(this.state.listicon)
   console.log(this.state.artisan)
 
   return (
@@ -130,13 +132,21 @@ render() {
           </Popup>
       </Marker>
 
-      {this.state.artisan[0].map(pos => {
+      {/* {this.state.artisan[0].map(pos => {
         return (
           <Marker position={pos.position} icon={redIcon}>
             <Popup>
               {pos.nom}
               </Popup>
-          </Marker>)
+          </Marker>)       
+      })} */}
+      {this.state.artisan[0].filter(pos => pos.id_metier===this.props.metier_idChoose).map(pos=>{ 
+        return (
+          <Marker position={pos.position} icon={redIcon}>
+            <Popup>
+              {pos.nom}
+              </Popup>
+          </Marker>)       
       })}
 
     </LeafletMap>
@@ -144,11 +154,10 @@ render() {
 }
 }
 
-
-
 const mapStateToProps = state => {
   return {
-    data: state.data
+    data: state.data,
+    metier_idChoose: state.metier_idChoose
   }
 }
 const mapDispatchToProps = dispatch => {

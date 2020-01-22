@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
-import { render } from 'react-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
@@ -20,7 +19,6 @@ class FormArtisan extends React.Component {
       ville: "",
       code_postal: "",
       metier_id: "1",
-      metierType:['trdk'],
       listMetier: []
     }
   }
@@ -43,20 +41,10 @@ class FormArtisan extends React.Component {
     });
   };
 
-  // metierType = async () => {
   componentDidMount() {
     axios.get('http://localhost:8000/metiers')
       .then(result => this.setState({ listMetier: (result.data) }))
-      // .then(() => {
-      //   this.state.listMetier.map(metier =>      
-      // <option>{metier.metier_type}</option>
-          
-      //   )
-      // })
   }
-
-
-  // }
 
   render() {
     return (
@@ -64,28 +52,29 @@ class FormArtisan extends React.Component {
         <Navbar />
         <h1>Form Artisan</h1>
         <form className="needs-validation" noValidate>
+          
           <div className="form-row">
+            
             <div className="col-md-4 mb-3">
               <label htmlFor="validationTooltip01">Nom de l'entreprise</label>
               <input type="text" name="entreprise_nom" className="form-control" onChange={this.handleInputChange}
-                id="validationTooltip01" placeholder="Nom commercial ou marque" required />
-              <div className="valid-tooltip">
-                Looks good!
-              </div>
+                id="validationTooltip01" placeholder="Nom commercial ou marque" required />    
             </div>
+            
             <div className="col-md-4 mb-3">
               <label htmlFor="validationTooltip02">Nom de l'artisan</label>
               <input type="text" name="nom_artisan"
                 onChange={this.handleInputChange} className="form-control" id="validationTooltip02" placeholder="Nom" required />
-              <div className="valid-tooltip">
-              </div>
             </div>
+
             <div className="col-md-4 mb-3">
               <label htmlFor="validationTooltip02">Prenom de l'artisan</label>
-              <input type="text" name="prenom_artisan" onChange={this.handleInputChange} className="form-control" id="validationTooltipprenom" placeholder="Prénom" required />
-              <div className="valid-tooltip">
+              <input type="text" name="prenom_artisan" onChange={this.handleInputChange} className="form-control" 
+              id="validationTooltipprenom" placeholder="Prénom" required />
+              
+            </div><div className="valid-tooltip">
               </div>
-            </div>
+
             <div className="col-md-4 mb-3">
               <label htmlFor="validationTooltipUsername">Site internet</label>
               <div className="input-group">
@@ -99,13 +88,19 @@ class FormArtisan extends React.Component {
               </div>
             </div>
           </div>
+
           <div className="form-row">
-            <label htmlFor="numero">numero</label>
-            <input type="text" name="numero" onChange={this.handleInputChange} className="col-md-3 mb-3" id="numero" placeholder="12" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="inputAddress">Adresse</label>
-            <input type="text" name="adresse" onChange={this.handleInputChange} className="form-control" id="inputAddress" placeholder="avenue de la création" />
+
+            <div className="col-md-3 mb-3">
+              <label htmlFor="numero">numero</label>
+              <input type="text" name="numero" onChange={this.handleInputChange} className="form-control" id="numero" placeholder="12" />
+            </div>
+
+            <div className="col-md-9 mb-3">
+              <label htmlFor="inputAddress">Adresse</label>
+              <input type="text" name="adresse" onChange={this.handleInputChange} className="form-control" id="inputAddress" placeholder="avenue de la création" />
+            </div>
+
           </div>
           <div className="form-row">
             <div className="col-md-6 mb-3">
@@ -124,7 +119,7 @@ class FormArtisan extends React.Component {
               <select id="inputState" name="metier_id" onChange={this.handleInputChange} className="form-control">
                 {
                   this.state.listMetier.length > 0 &&
-                  this.state.listMetier.map(metier => <option>{metier.metier_type}</option>)
+                  this.state.listMetier.map(metier => <option value={parseInt(metier.id)}>{metier.metier_type}</option>)
                 }
               </select>
             </div>
@@ -172,7 +167,6 @@ class FormArtisan extends React.Component {
           </div>
           <button id='submitButton' onClick={this.submitForm} className="btn btn-primary" type="submit">Enregistrement d'un nouvel artisan</button>
         </form>
-        <button onClick={this.metierType}>testmetier</button>
       </>
     )
   }

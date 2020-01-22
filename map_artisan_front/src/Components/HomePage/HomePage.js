@@ -2,13 +2,9 @@ import React from 'react';
 import Navbar from '../Navbar/Navbar';
 import MapArtisans from '../MapArtisans/MapArtisans';
 import ButtonsList from '../ButtonsList/Buttons.list';
-import axios from 'axios';
+import MapArtisan2 from '../MapArtisan2/MapArtisan2';
 
 const HomePage = () => {
-//   const number = '43';
-//   const adress = 'rue jean Baptiste hamon'
-//   const city = 'Reze'
-//   const apiKey ='cRBTog5mofIxlkvzOOfOxEffCfUBEifgKGXuSazoAuc'
 
 // let transformAdress =()=>{
 //   axios(`https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=${apiKey}&searchtext=${number}+${adress}+${city}`)
@@ -27,7 +23,8 @@ const HomePage = () => {
       <Navbar/>
       <p>Home Page</p>
       <ButtonsList/>
-      <MapArtisans/>
+      {/* <MapArtisans/> */}
+      <MapArtisan2/>
     </>
   )
 };

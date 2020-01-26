@@ -5,12 +5,12 @@ class Button extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: props.id,
-      metier: props.metier
+      value: this.props.id,
+      metier: this.props.metier
     }
   }
 
-  handleclick = (id) => {
+  handleclick = () => {
     console.log('test')
     console.log(this.state.value)
     this.props.metierIdChoose(this.state.value)
@@ -20,7 +20,7 @@ class Button extends React.Component {
     console.log(this.state.metier)
     return (
       <>
-        <button type="button" value={this.state.value} onClick={this.handleclick} className="btn btn-outline-success">{this.state.metier}</button>
+        <button type="button" value={this.props.id} onClick={this.handleclick} className="btn btn-outline-success">{this.props.metier}</button>
       </>
     )
   }

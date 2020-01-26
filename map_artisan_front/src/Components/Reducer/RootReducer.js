@@ -32,10 +32,12 @@ const initState = {
       "photo_url3": null,
       "ville": "nantes",
       "metier_id": 2,
-      "prestation_id": 1
+      "prestation_id": 1,
+      avis: null
     }],
   dataMetier: [{ id: '', metier_type: '' }],
-  metier_idChoose: 0
+  metier_idChoose: 0,
+  dataAvis: []
 };
 
 const RootReducer = (state = initState, action) => {
@@ -51,6 +53,8 @@ const RootReducer = (state = initState, action) => {
       return { ...state, dataMetier: action.payload }
     case "METIERIDCHOOSE":
       return { ...state, metier_idChoose: action.payload }
+    case "INITIALYSEAVIS":
+      return { ...state, dataAvis: action.payload }
     default:
       return state;
   }

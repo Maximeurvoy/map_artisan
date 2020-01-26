@@ -33,11 +33,12 @@ class MapArtisan2 extends React.Component {
       listicon: [[47, -1.55], [47.25, -1.56]],
       listname: [['robert'], ['simon']],
       artisan: [[{
-        position: [47,-1.55],
+        position: [47, -1.55],
         nom: '',
-        id_metier:0
+        id_metier: 0
       }]],
-      metier_idChoose:1
+      metier_idChoose: 1,
+      VisibilityLocalisation:false
 
     }
   }
@@ -54,6 +55,9 @@ class MapArtisan2 extends React.Component {
     }
   }
 
+    handleHere=()=>{
+      this.setState({VisibilityLocalisation: !this.state.VisibilityLocalisation})
+    }
   // createMarker = (arrayLatLon, name) => {
   //   arrayLatLon.map(pos => {
   //     return (
@@ -82,88 +86,113 @@ class MapArtisan2 extends React.Component {
         this.setState({ listicon: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.lat, pos.lon] }) })
         this.setState({ listname: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.entreprise_nom] }) })
         this.setState({
-          artisan:[this.props.data.filter(pos => pos.lat).map(pos =>{return {position :[pos.lat, pos.lon], nom :pos.entreprise_nom, id_metier:pos.metier_id}} )]})
-          // this.setState({this.props.data.filter(pos => pos.lat).map(pos => { return {nom: pos.entreprise_nom }})      
-           })
-        
-// console.log(this.state.listicon)
-console.log(this.state.artisan)
-this.MarkerAuto()
+          artisan: [this.props.data.filter(pos => pos.lat).map(pos => { return { position: [pos.lat, pos.lon], nom: pos.entreprise_nom, id_metier: pos.metier_id } })]
+        })
+      })
+
+    axios.get('http://localhost:8000/avis')
+      .then(response => this.props.initialyseAvis(response.data))
+
+    axios.get('http://localhost:8000/metiers')
+      .then(response => { this.props.initialyseMetier(response.data) })
+
+
+    // console.log(this.state.listicon)
+    console.log(this.state.artisan)
+    this.MarkerAuto()
   }
 
-render() {
-  const iconPerson = new L.Icon({
-    iconUrl: 'redIcon.png',
-    iconRetinaUrl: 'redIcon.png',
-    iconAnchor: null,
-    popupAnchor: null,
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-    iconSize: new L.Point(60, 75),
-    // className: 'leaflet-div-icon'
-  });
+  render() {
+    const iconPerson = new L.Icon({
+      iconUrl: 'redIcon.png',
+      iconRetinaUrl: 'redIcon.png',
+      iconAnchor: null,
+      popupAnchor: null,
+      shadowUrl: null,
+      shadowSize: null,
+      shadowAnchor: null,
+      iconSize: new L.Point(60, 75),
+      // className: 'leaflet-div-icon'
+    });
 
-  // console.log(this.state.listicon)
-  console.log(this.state.artisan)
+    // console.log(this.state.listicon)
+    console.log(this.state.artisan[0])
+    console.log(this.props.dataAvis)
+    console.log(this.props.data)
+    // .filter(pos => pos.id_metier === this.props.metier_idChoose).map((pos, index) => {
+    //   return (
+    //     pos.position, pos.nom, pos.commentaire
+    //    )}))
 
-  return (
-    <LeafletMap
-      center={this.state.center}
-      zoom={this.state.zoom}
-      maxZoom={19}
-      attributionControl={true}
-      zoomControl={true}
-      doubleClickZoom={true}
-      scrollWheelZoom={true}
-      dragging={true}
-      animate={true}
-      easeLinearity={0.35}
-    >
-      <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png' />
-      <Marker position={[50, 10]} >
-        <Popup>
-          Popup for any custom information.
+    return (
+      <>
+      <LeafletMap
+        center={this.state.center}
+        zoom={this.state.zoom}
+        maxZoom={19}
+        attributionControl={true}
+        zoomControl={true}
+        doubleClickZoom={true}
+        scrollWheelZoom={true}
+        dragging={true}
+        animate={true}
+        easeLinearity={0.35}
+      >
+        <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png' />
+        {this.state.VisibilityLocalisation&&<Marker position={this.state.center} >
+          <Popup>
+            you are here
           </Popup>
-      </Marker>
-      <Marker position={[40, 10]} icon={redIcon} >
-        <Popup>
-          Popup for any custom information.
+        </Marker>}
+        <Marker position={[40, 10]} icon={redIcon} >
+          <Popup>
+            Popup for any custom information.
           </Popup>
-      </Marker>
-
-      {/* {this.state.artisan[0].map(pos => {
-        return (
-          <Marker position={pos.position} icon={redIcon}>
-            <Popup>
-              {pos.nom}
+        </Marker>
+        {/* {this.state.artisan[0].filter(pos => pos.id_metier === this.props.metier_idChoose).map((pos, index) => {
+          return (
+            <Marker key={index} position={pos.position} icon={redIcon}>
+              <Popup>
+                <h2>{pos.nom}</h2>
+                <p>{pos.commentaire}</p>
               </Popup>
-          </Marker>)       
-      })} */}
-      {this.state.artisan[0].filter(pos => pos.id_metier===this.props.metier_idChoose).map(pos=>{ 
-        return (
-          <Marker position={pos.position} icon={redIcon}>
-            <Popup>
-              {pos.nom}
+        </Marker>)
+        })} */}
+        {this.props.data.filter(pos => pos.metier_id === this.props.metier_idChoose).map((pos, index) => {
+          return (
+            <Marker key={index} position={[pos.lat,pos.lon]} icon={redIcon}>
+              <Popup>
+                <h2>{pos.entreprise_nom}</h2>
+                <p>{pos.commentaire}</p>
               </Popup>
-          </Marker>)       
-      })}
-
-    </LeafletMap>
-  );
-}
+        </Marker>)
+        })}
+      </LeafletMap>
+      <button onClick={this.handleHere} className="btn btn-secondary btn-lg col-md-6 mb-6">{this.state.VisibilityLocalisation?'Cacher localisation': 'Se localiser'}</button>
+      </>
+    );
+  }
 }
 
 const mapStateToProps = state => {
   return {
     data: state.data,
-    metier_idChoose: state.metier_idChoose
+    metier_idChoose: state.metier_idChoose,
+    dataAvis: state.dataAvis,
+    dataMetier: state.dataMetier
+
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     initialyse: (data) => {
       dispatch({ type: 'INITIALYSE', payload: data })
+    },
+    initialyseAvis: (data) => {
+      dispatch({ type: 'INITIALYSEAVIS', payload: data })
+    },
+    initialyseMetier: (data) => {
+      dispatch({ type: 'INITIALYSEMETIER', payload: data })
     }
   }
 }

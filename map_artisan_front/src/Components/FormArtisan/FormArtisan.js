@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import './FormArtisan.css';
 
 class FormArtisan extends React.Component {
   constructor() {
@@ -26,13 +27,21 @@ class FormArtisan extends React.Component {
   submitForm = (event) => {
     const { entreprise_nom, nom_artisan, prenom_artisan, site_internet, numero, adresse, photo_url1, photo_url2, photo_url3, ville, code_postal, metier_id } = this.state
     const form = { entreprise_nom, nom_artisan, prenom_artisan, site_internet, numero, adresse, ville, code_postal, metier_id }
-    event.preventDefault();
     console.log(this.state)
     axios.post('http://localhost:8000/artisans', form)
-      .then(() => console.log('ok'))
+      .then(response=> { if(response.data != null){ axios.get('http://localhost:8000/artisans')
+      .then(response => { this.props.initialyse(response.data) })
+      .then(() => this.props.history.push("/avis"));
+} })
       .catch(err => {
         console.error(err);
+        alert('error missing field')
       });
+    event.preventDefault();
+
+   
+
+
   }
 
   handleInputChange = e => {
@@ -51,16 +60,16 @@ class FormArtisan extends React.Component {
       <>
         <Navbar />
         <h1>Form Artisan</h1>
-        <form className="needs-validation" noValidate>
-          
+        <form className="needs-validation bg-secondary text-black rounded container-fluid" noValidate>
+
           <div className="form-row">
-            
-            <div className="col-md-4 mb-3">
+
+            <div className="col-md-4 mb-3 ">
               <label htmlFor="validationTooltip01">Nom de l'entreprise</label>
               <input type="text" name="entreprise_nom" className="form-control" onChange={this.handleInputChange}
-                id="validationTooltip01" placeholder="Nom commercial ou marque" required />    
+                id="validationTooltip01" placeholder="Nom commercial ou marque" required />
             </div>
-            
+
             <div className="col-md-4 mb-3">
               <label htmlFor="validationTooltip02">Nom de l'artisan</label>
               <input type="text" name="nom_artisan"
@@ -69,11 +78,11 @@ class FormArtisan extends React.Component {
 
             <div className="col-md-4 mb-3">
               <label htmlFor="validationTooltip02">Prenom de l'artisan</label>
-              <input type="text" name="prenom_artisan" onChange={this.handleInputChange} className="form-control" 
-              id="validationTooltipprenom" placeholder="Prénom" required />
-              
+              <input type="text" name="prenom_artisan" onChange={this.handleInputChange} className="form-control"
+                id="validationTooltipprenom" placeholder="Prénom" required />
+
             </div><div className="valid-tooltip">
-              </div>
+            </div>
 
             <div className="col-md-4 mb-3">
               <label htmlFor="validationTooltipUsername">Site internet</label>
@@ -93,12 +102,12 @@ class FormArtisan extends React.Component {
 
             <div className="col-md-3 mb-3">
               <label htmlFor="numero">numero</label>
-              <input type="text" name="numero" onChange={this.handleInputChange} className="form-control" id="numero" placeholder="12" />
+              <input type="text" name="numero" onChange={this.handleInputChange} className="form-control" id="numero" placeholder="12" required />
             </div>
 
             <div className="col-md-9 mb-3">
               <label htmlFor="inputAddress">Adresse</label>
-              <input type="text" name="adresse" onChange={this.handleInputChange} className="form-control" id="inputAddress" placeholder="avenue de la création" />
+              <input type="text" name="adresse" onChange={this.handleInputChange} className="form-control" id="inputAddress" placeholder="avenue de la création" required />
             </div>
 
           </div>
@@ -112,18 +121,19 @@ class FormArtisan extends React.Component {
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="inputCity">Code postal</label>
-              <input type="text" name="code_postal" onChange={this.handleInputChange} placeholder="44000" className="form-control" id="inputCity" />
+              <input type="text" name="code_postal" onChange={this.handleInputChange} placeholder="44000" className="form-control" id="inputCity" required />
             </div>
             <div className="form-group col-md-4">
               <label htmlFor="inputState">Type d'artisanat</label>
-              <select id="inputState" name="metier_id" onChange={this.handleInputChange} className="form-control">
+              <select id="inputState" name="metier_id" onChange={this.handleInputChange} className="form-control" required>
                 {
                   this.state.listMetier.length > 0 &&
-                  this.state.listMetier.map(metier => <option value={parseInt(metier.id)}>{metier.metier_type}</option>)
+                  this.state.listMetier.map((metier, index) => <option key={index} value={parseInt(metier.id)}>{metier.metier_type}</option>)
                 }
               </select>
             </div>
           </div>
+
 
 
           <div className="form-check form-check-inline">
@@ -179,4 +189,16 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(FormArtisan);
+const mapDispatchToProps = dispatch => {
+  return {
+    initialyseAvis: (data) => {
+      dispatch({ type: 'INITIALYSEAVIS', payload: data })
+    },
+    initialyse: (data) => {
+      dispatch({ type: 'INITIALYSE', payload: data })
+    },
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormArtisan);

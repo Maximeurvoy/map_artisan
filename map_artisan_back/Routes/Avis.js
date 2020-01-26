@@ -24,8 +24,18 @@ router.post('/', function (req, res) {
   }
 })
 
+// router.get('/', function (req, res) {
+//   connection.query('SELECT * FROM avis', function (err,result,){
+//     if(err){
+//       res.sendStatus(500)
+//     } else{
+//       res.json(result)
+//     };
+//   })
+// })
+
 router.get('/', function (req, res) {
-  connection.query('SELECT * FROM avis', function (err,result,){
+  connection.query('SELECT * FROM avis INNER JOIN  artisan ON avis.artisan_id=artisan.id', function (err,result,){
     if(err){
       res.sendStatus(500)
     } else{
@@ -34,8 +44,19 @@ router.get('/', function (req, res) {
   })
 })
 
+
 router.get('/:id', function(req,res){
   connection.query(`SELECT commentaire,note,artisan_id FROM avis WHERE artisan_id = ?`,[req.params.id], function(err,result){
+    if(err){
+      res.sendStatus(500)
+    }else{
+      res.json(result)
+    };
+  })
+})
+
+router.get('/test/:id', function(req,res){
+  connection.query(`SELECT * FROM artisan WHERE id = ? `,[req.params.id,req.params.id], function(err,result){
     if(err){
       res.sendStatus(500)
     }else{

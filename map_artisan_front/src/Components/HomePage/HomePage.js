@@ -1,32 +1,67 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
-import MapArtisans from '../MapArtisans/MapArtisans';
 import ButtonsList from '../ButtonsList/Buttons.list';
 import MapArtisan2 from '../MapArtisan2/MapArtisan2';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
-const HomePage = () => {
+class HomePage extends React.Component {
+  constructor(){
+    super()
+  }
 
-// let transformAdress =()=>{
-//   axios(`https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=${apiKey}&searchtext=${number}+${adress}+${city}`)
-//   .then(function(response) {
-//     console.log(response)
-//     console.log (response.data)
-//     let lat = response.data.Response.View[0].Result[0].Location.DisplayPosition.Latitude
-//     let lon = response.data.Response.View[0].Result[0].Location.DisplayPosition.Longitude
-//     console.log(lat, lon)
-//   })
- 
-//}
+
+async componentDidMount() {
+ await axios.get('http://localhost:8000/artisans')
+    .then(response => { this.props.initialyse(response.data) })
+
+await  axios.get('http://localhost:8000/avis')
+    .then(response => this.props.initialyseAvis(response.data))
+
+ await axios.get('http://localhost:8000/metiers')
+    .then(response => { this.props.initialyseMetier(response.data) })
+
+}
+render(){
 
   return (
     <>
       <Navbar/>
-      <p>Home Page</p>
+      <h1>Map Artisans</h1>
+      <p className='d-none d-md-block d-xl-none '>Cliquer sur la catégorie de votre choix pour voir les artisans Nantais près de vous</p>
+      <p>A venir : manifestations artisanales et expositions</p>
+
       <ButtonsList/>
-      {/* <MapArtisans/> */}
       <MapArtisan2/>
     </>
   )
-};
+  }
 
-export default HomePage;
+}
+const mapStateToProps = state => {
+  return {
+    theme: state.theme,
+    data: state.data,
+    metier_idChoose: state.metier_idChoose,
+    dataAvis: state.dataAvis,
+    dataMetier: state.dataMetier
+  }
+  }
+  const mapDispatchToProps = dispatch => {
+  return {
+    initialyse: (data) => {
+      dispatch({ type: 'INITIALYSE', payload: data })
+    },
+    initialyseAvis: (data) => {
+      dispatch({ type: 'INITIALYSEAVIS', payload: data })
+    },
+    initialyseMetier: (data) => {
+      dispatch({ type: 'INITIALYSEMETIER', payload: data })
+    }
+  }
+  }
+
+export default connect(mapStateToProps,mapDispatchToProps) (HomePage);
+
+
+

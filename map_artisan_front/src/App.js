@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import ListeArtisans from './Components/ListeArtisans/ListeArtisans';
+import Avis from './Components/Avis/Avis';
 
 class App extends React.Component {
 
@@ -24,6 +25,13 @@ class App extends React.Component {
   componentDidMount() {
     axios.get('http://localhost:8000/artisans')
       .then(response => { this.props.initialyse(response.data) })
+
+    axios.get('http://localhost:8000/avis')
+      .then(response => this.props.initialyseAvis(response.data))
+
+    axios.get('http://localhost:8000/metiers')
+      .then(response => { this.props.initialyseMetier(response.data) })
+
   }
 
   render() {
@@ -34,6 +42,7 @@ class App extends React.Component {
           <Route path='/formartisan' component={FormArtisan}></Route>
           <Route path='/setting' component={Setting}></Route>
           <Route path='/listeartisan' component={ListeArtisans}></Route>
+          <Route path='/avis' component={Avis}></Route>
         </Switch>
       </div>
     );
@@ -43,16 +52,26 @@ class App extends React.Component {
 const mapStateToProps = state => {
   return {
     theme: state.theme,
-    data: state.data
+    data: state.data,
+    metier_idChoose: state.metier_idChoose,
+    dataAvis: state.dataAvis,
+    dataMetier: state.dataMetier
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     initialyse: (data) => {
       dispatch({ type: 'INITIALYSE', payload: data })
+    },
+    initialyseAvis: (data) => {
+      dispatch({ type: 'INITIALYSEAVIS', payload: data })
+    },
+    initialyseMetier: (data) => {
+      dispatch({ type: 'INITIALYSEMETIER', payload: data })
     }
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
 

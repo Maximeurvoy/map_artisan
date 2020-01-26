@@ -30,10 +30,10 @@ CREATE TABLE  artisan (
   photo_url3 VARCHAR (128),
   ville VARCHAR (128),
   code_postal VARCHAR (5),
-  lat INT,
-  lon INT,
+  lat FLOAT,
+  lon FLOAT,
   metier_id INT NOT NULL, 
-  FOREIGN KEY (metier_id) REFERENCES metier(id)
+  FOREIGN KEY (metier_id) REFERENCES metier(id) ON DELETE CASCADE
 );
 
 -- creation de la table de jointure d'offre de prestations des artisans
@@ -50,7 +50,7 @@ CREATE TABLE avis (
   commentaire VARCHAR (400),
   note INT(2),
   artisan_id INT NOT NULL,
-  FOREIGN KEY (artisan_id) REFERENCES artisan(id)
+  FOREIGN KEY (artisan_id) REFERENCES artisan(id) ON DELETE CASCADE
 );
 
 

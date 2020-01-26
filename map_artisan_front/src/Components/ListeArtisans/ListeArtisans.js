@@ -19,7 +19,7 @@ class ListeArtisans extends React.Component {
       <>
         <Navbar />
         <h1>Liste de tous les artisans</h1>
-        <div>{this.addListSpecialty(this.props.data)}</div>
+        {this.addListSpecialty(this.props.data)}
       </>
     )
   }

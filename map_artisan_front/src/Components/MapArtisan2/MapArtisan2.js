@@ -1,6 +1,8 @@
 import React from 'react'
 import { Map as LeafletMap, TileLayer, Marker, Popup } from 'react-leaflet';
 import './MapArtisan2.css'
+import {Link} from 'react-router-dom';
+
 import L, { popup } from 'leaflet';
 import { redIcon } from './RedIcon.js';
 import 'leaflet/dist/leaflet.css'
@@ -37,9 +39,9 @@ class MapArtisan2 extends React.Component {
         nom: '',
         id_metier: 0
       }]],
-      metier_idChoose: 1,
-      VisibilityLocalisation:false
 
+      metier_idChoose: 1,
+      VisibilityLocalisation: false
     }
   }
 
@@ -55,21 +57,18 @@ class MapArtisan2 extends React.Component {
     }
   }
 
-    handleHere=()=>{
-      this.setState({VisibilityLocalisation: !this.state.VisibilityLocalisation})
+  handleHere = () => {
+    this.setState({ VisibilityLocalisation: !this.state.VisibilityLocalisation })
+  }
+
+  average = (arrayData) => {
+    let somme = 0
+    for (let i = 0; i < arrayData.length; i++) {
+      somme += arrayData[i]
     }
-  // createMarker = (arrayLatLon, name) => {
-  //   arrayLatLon.map(pos => {
-  //     return (
-  //       <Marker position={pos} icon={redIcon}>
-  //         <Popup>
-  //           {name}
-  //         </Popup>
-  //       </Marker>
-  //       )
-  //   })
-  //   console.log('pass')
-  // }
+    let moy = somme/arrayData.length
+    return moy
+  }
 
   async componentDidMount() {
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -80,15 +79,15 @@ class MapArtisan2 extends React.Component {
 
     console.log(this.state.center)
 
-    axios.get('http://localhost:8000/artisans')
-      .then(response => { this.props.initialyse(response.data) })
-      .then(() => {
-        this.setState({ listicon: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.lat, pos.lon] }) })
-        this.setState({ listname: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.entreprise_nom] }) })
-        this.setState({
-          artisan: [this.props.data.filter(pos => pos.lat).map(pos => { return { position: [pos.lat, pos.lon], nom: pos.entreprise_nom, id_metier: pos.metier_id } })]
-        })
-      })
+    // axios.get('http://localhost:8000/artisans')
+    //   .then(response => { this.props.initialyse(response.data) })
+    //   .then(() => {
+    //     this.setState({ listicon: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.lat, pos.lon] }) })
+    //     this.setState({ listname: this.props.data.filter(pos => pos.lat).map(pos => { return [pos.entreprise_nom] }) })
+    //     this.setState({
+    //       artisan: [this.props.data.filter(pos => pos.lat).map(pos => { return { position: [pos.lat, pos.lon], nom: pos.entreprise_nom, id_metier: pos.metier_id } })]
+    //     })
+    //   })
 
     axios.get('http://localhost:8000/avis')
       .then(response => this.props.initialyseAvis(response.data))
@@ -96,10 +95,9 @@ class MapArtisan2 extends React.Component {
     axios.get('http://localhost:8000/metiers')
       .then(response => { this.props.initialyseMetier(response.data) })
 
-
-    // console.log(this.state.listicon)
     console.log(this.state.artisan)
     this.MarkerAuto()
+    console.log(this.props.data)
   }
 
   render() {
@@ -112,44 +110,34 @@ class MapArtisan2 extends React.Component {
       shadowSize: null,
       shadowAnchor: null,
       iconSize: new L.Point(60, 75),
-      // className: 'leaflet-div-icon'
     });
-
-    // console.log(this.state.listicon)
-    console.log(this.state.artisan[0])
-    console.log(this.props.dataAvis)
-    console.log(this.props.data)
-    // .filter(pos => pos.id_metier === this.props.metier_idChoose).map((pos, index) => {
-    //   return (
-    //     pos.position, pos.nom, pos.commentaire
-    //    )}))
 
     return (
       <>
-      <LeafletMap
-        center={this.state.center}
-        zoom={this.state.zoom}
-        maxZoom={19}
-        attributionControl={true}
-        zoomControl={true}
-        doubleClickZoom={true}
-        scrollWheelZoom={true}
-        dragging={true}
-        animate={true}
-        easeLinearity={0.35}
-      >
-        <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png' />
-        {this.state.VisibilityLocalisation&&<Marker position={this.state.center} >
-          <Popup>
-            you are here
+        <LeafletMap
+          center={this.state.center}
+          zoom={this.state.zoom}
+          maxZoom={19}
+          attributionControl={true}
+          zoomControl={true}
+          doubleClickZoom={true}
+          scrollWheelZoom={true}
+          dragging={true}
+          animate={true}
+          easeLinearity={0.35}
+        >
+          <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png' />
+          {this.state.VisibilityLocalisation && <Marker position={this.state.center} >
+            <Popup>
+              you are here
           </Popup>
-        </Marker>}
-        <Marker position={[40, 10]} icon={redIcon} >
-          <Popup>
-            Popup for any custom information.
+          </Marker>}
+          <Marker position={[40, 10]} icon={redIcon} >
+            <Popup>
+              Popup for any custom information.
           </Popup>
-        </Marker>
-        {/* {this.state.artisan[0].filter(pos => pos.id_metier === this.props.metier_idChoose).map((pos, index) => {
+          </Marker>
+          {/* {this.state.artisan[0].filter(pos => pos.id_metier === this.props.metier_idChoose).map((pos, index) => {
           return (
             <Marker key={index} position={pos.position} icon={redIcon}>
               <Popup>
@@ -158,23 +146,29 @@ class MapArtisan2 extends React.Component {
               </Popup>
         </Marker>)
         })} */}
-        {this.props.data.filter(pos => pos.metier_id === this.props.metier_idChoose).map((pos, index) => {
-          return (
-            <Marker key={index} position={[pos.lat,pos.lon]} icon={redIcon}>
-              <Popup>
-                <h2>{pos.entreprise_nom}</h2>
-                <p>{pos.commentaire}</p>
-              </Popup>
-        </Marker>)
-        })}
-      </LeafletMap>
-      <button onClick={this.handleHere} className="btn btn-secondary btn-lg col-md-6 mb-6">{this.state.VisibilityLocalisation?'Cacher localisation': 'Se localiser'}</button>
+          {this.props.data.filter(pos => pos.metier_id === this.props.metier_idChoose).map((pos, index) => {
+            return (
+              <Marker key={index} position={[pos.lat, pos.lon]} icon={redIcon}>
+                <Popup>
+                  <h2>{pos.entreprise_nom}</h2>
+                  <Link className="navbar-brand text-black" to={`/artisan/${pos.id}`}>plus d'info </Link>
+                <p>  note moyenne : {this.average(pos.note)}</p>
+
+                  {pos.commentaire.map((comment,index) => <li key={index}>{comment}</li>)}
+
+
+                </Popup>
+              </Marker>)
+          })}
+        </LeafletMap>
+        <button onClick={this.handleHere} className="btn btn-secondary btn-lg col-md-6 mb-6">{this.state.VisibilityLocalisation ? 'Cacher localisation' : 'Se localiser'}</button>
       </>
     );
   }
 }
 
 const mapStateToProps = state => {
+  console.log(state)
   return {
     data: state.data,
     metier_idChoose: state.metier_idChoose,

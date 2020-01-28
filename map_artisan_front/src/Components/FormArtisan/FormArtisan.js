@@ -38,10 +38,6 @@ class FormArtisan extends React.Component {
         alert('error missing field')
       });
     event.preventDefault();
-
-   
-
-
   }
 
   handleInputChange = e => {
@@ -165,7 +161,7 @@ class FormArtisan extends React.Component {
           </div>
           <div className="form-check-inline">
             <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" />
-            <label className="form-check-label" htmlFor="exampleRadios2">
+            <label className="form-check-label " htmlFor="exampleRadios2">
               2 etoiles
             </label>
           </div>

@@ -35,7 +35,7 @@ const initState = {
       "prestation_id": 1,
       avis: null
     }],
-  dataMetier: [{ id: '', metier_type: '' }],
+  dataMetier: [],
   metier_idChoose: 0,
   dataAvis: []
 };

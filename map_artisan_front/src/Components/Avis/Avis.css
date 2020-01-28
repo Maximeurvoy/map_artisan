@@ -1,0 +1,23 @@
+
+input[type=radio] {
+  border: 0.5px solid black;
+  padding: 0.5em;
+  -webkit-appearance: none;
+  border-radius: 25%;
+}
+
+input[type=radio]:checked {
+  background-color: green;
+}
+
+input[type=radio]:focus {
+  outline-color: transparent;
+}
+
+.lastAvis{
+  list-style: none;
+  border: 0.5px solid black;
+  margin: auto;
+  margin:0.2em;
+  padding-top: 0.5em;
+}

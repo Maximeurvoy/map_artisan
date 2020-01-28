@@ -4,6 +4,7 @@ import React from 'react'; import { connect } from 'react-redux';
 class Button extends React.Component {
   constructor(props) {
     super(props)
+    console.log(props)
     this.state = {
       value: this.props.id,
       metier: this.props.metier

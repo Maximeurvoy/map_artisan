@@ -23,7 +23,7 @@ const Navbar = () => {
               <Link className="navbar-brand text-white" to='/listeartisan'>Tous nos artisans</Link>
             </li>
             <li className="nav-item active">
-              <Link className="navbar-brand text-white" to='/avis'>Laisser votre avis</Link>
+              <Link className="navbar-brand text-white" to='/avis'>Laisser un avis</Link>
             </li>
             <li className="nav-item">
               <Link className="navbar-brand text-white" to='/setting'>Réglage</Link>

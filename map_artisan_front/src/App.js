@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import ListeArtisans from './Components/ListeArtisans/ListeArtisans';
 import Avis from './Components/Avis/Avis';
+import Artisan from './Components/Artisan/Artisan';
 
 class App extends React.Component {
 
@@ -43,6 +44,7 @@ class App extends React.Component {
           <Route path='/setting' component={Setting}></Route>
           <Route path='/listeartisan' component={ListeArtisans}></Route>
           <Route path='/avis' component={Avis}></Route>
+          <Route path='/artisan/:id' component={Artisan}></Route>
         </Switch>
       </div>
     );

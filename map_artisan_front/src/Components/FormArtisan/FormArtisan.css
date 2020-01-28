@@ -5,3 +5,9 @@ input:invalid {
 input:valid {
   border: 2px solid green;
 }
+
+input[type='radio'] {
+  transform: scale(2);
+
+}
+
